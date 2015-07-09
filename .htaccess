@@ -1,5 +1,4 @@
 RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^template/.+$ - [L]
 RewriteRule ^[^.]+.html$ index.php [QSA,L]
