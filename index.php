@@ -2,17 +2,23 @@
 
 require 'vendor/autoload.php';
 
+
 $app = new \Slim\Slim();
-$app->get('/:name+', function ($name) {
-    
-    dibi::connect(array(
-        'driver'   => 'mysql',
-        'host'     => 'localhost',
-        'username' => 'root',
-        'password' => 'abcd',
-        'database' => 'widget-o'
-    ));
-    
+
+$databaseConfig = json_decode(file_get_contents('config/database.json'), true);
+dibi::connect($databaseConfig);
+
+$app->put('/rest/:name+', function ($name) use ($app) {
+    $idsite = implode('/', $name);
+
+    dibi::query(
+            'update `site` set', 
+            array('json' => $app->request->getBody()),
+            'where `idsite` = %s',
+            $idsite);
+});
+
+$app->get('/rest/:name+', function ($name) {
     $idsite = implode('/', $name);
     
     $result = dibi::query('select idsite, template, json FROM `site` where idsite = %s', $idsite);
@@ -20,7 +26,23 @@ $app->get('/:name+', function ($name) {
     // TODO 404 if not found
     $site = $result->fetchAll()[0];
     
-    echo str_replace('{page:"page"}', $site->json, file_get_contents("templates/".$site->template));
+    echo $site->json;
+});
+
+$app->get('/:name+', function ($name) {
+    $idsite = implode('/', $name);
+    
+    $result = dibi::query('select idsite, template, json FROM `site` where idsite = %s', $idsite);
+    
+    // TODO 404 if not found
+    $site = $result->fetchAll()[0];
+    
+    
+    
+    echo str_replace(
+            array('{idpage}', '{page:"page"}'), 
+            array($site->idsite, $site->json), 
+            file_get_contents("templates/".$site->template));
 });
 $app->run();
 
