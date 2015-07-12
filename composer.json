@@ -4,5 +4,9 @@
     "require": {
         "slim/slim": "~2.0",
         "dibi/dibi": "^2.3"
+    },
+    ,
+    "autoload": {
+        "psr-0": { "Widgeto": "." }
     }
 }
