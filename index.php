@@ -8,6 +8,15 @@ $app = new \Slim\Slim();
 $databaseConfig = json_decode(file_get_contents('config/database.json'), true);
 dibi::connect($databaseConfig);
 
+$app->post('/rest/login.html', function () use ($app) {
+    $login = json_decode($app->request->getBody(), true);
+
+    $result = dibi::query('select username FROM `user` where username = %s and password = %s', $login["username"], md5($login["password"]));
+    
+    // TODO 404 if not found
+    $result->fetchAll()[0];
+});
+
 $app->put('/rest/:name+', function ($name) use ($app) {
     $idsite = implode('/', $name);
 
