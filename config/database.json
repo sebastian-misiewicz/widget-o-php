@@ -1,7 +1,0 @@
-{
-    "driver": "mysql",
-    "host": "localhost",
-    "username": "username",
-    "password": "*******",
-    "database": "widget-o"
-}
