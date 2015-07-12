@@ -8,18 +8,14 @@ class Widgeto {
 
     public function run() {
         $app = new \Slim\Slim();
-
+        
+        $app->add(new \Widgeto\Middleware\Authorization(getallheaders()));
+        
         $databaseConfig = json_decode(file_get_contents('config/database.json'), true);
         \dibi::connect($databaseConfig);
 
-        $app->post('/rest/login.html', function () use ($app) {
-            $login = json_decode($app->request->getBody(), true);
-
-            $result = UserService::check($login["username"], md5($login["password"]));
-
-            if (!$result) {
-                $app->status(403);
-            }
+        $app->post('/rest/login.html', function () {
+            // Do nothing here. See \Widgeto\Middleware\Authorization
         });
 
         $app->put('/rest/:name+', function ($name) use ($app) {
