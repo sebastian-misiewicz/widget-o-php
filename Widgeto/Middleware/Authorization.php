@@ -11,7 +11,7 @@ class Authorization extends \Slim\Middleware {
     }
     
     public function call() {
-        // TODO finish it up
+        // TODO sebastian finish it up
         $this->next->call();
     }
 

@@ -34,7 +34,7 @@ class Widgeto {
 
             $result = \dibi::query('select idsite, template, json FROM `site` where idsite = %s', $idsite);
 
-            // TODO 404 if not found
+            // TODO sebastian 404 if not found
             $site = $result->fetchAll()[0];
 
             echo $site->json;
@@ -45,7 +45,7 @@ class Widgeto {
 
             $result = \dibi::query('select idsite, template, json FROM `site` where idsite = %s', $idsite);
 
-            // TODO 404 if not found
+            // TODO sebastian 404 if not found
             $site = $result->fetchAll()[0];
 
             echo str_replace(
