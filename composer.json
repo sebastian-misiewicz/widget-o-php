@@ -1,4 +1,5 @@
 {
+    "name": "widget-o/widget-o-php",
     "require": {
         "slim/slim": "~2.0",
         "dibi/dibi": "^2.3"
