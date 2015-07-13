@@ -6,8 +6,11 @@ use Widgeto\Service\UserService;
 
 class Widgeto {
 
+    private $app;
+    
     public function run() {
         $app = new \Slim\Slim();
+        $this->app = $app;
         
         $app->add(new \Widgeto\Middleware\Authorization(getallheaders()));
         
@@ -26,28 +29,38 @@ class Widgeto {
         });
 
         $app->get('/rest/:name+', function ($name) {
-            $idsite = implode('/', $name);
-
-            $result = \dibi::query('select idsite, template, json FROM `site` where idsite = %s', $idsite);
-
-            // TODO sebastian 404 if not found
-            $site = $result->fetchAll()[0];
+            $site = $this->getSite($name);
 
             echo $site->json;
         });
 
         $app->get('/:name+', function ($name) {
-            $idsite = implode('/', $name);
+            $site = $this->getSite($name);
 
-            $result = \dibi::query('select idsite, template, json FROM `site` where idsite = %s', $idsite);
-
-            // TODO sebastian 404 if not found
-            $site = $result->fetchAll()[0];
+            echo str_replace(
+                    array('{idpage}', '{page:"page"}'), array($site->idsite, $site->json), file_get_contents("templates/" . $site->template));
+        });
+        
+        $app->get('/', function () {
+            $site = $this->getSite(array('index.html'));
 
             echo str_replace(
                     array('{idpage}', '{page:"page"}'), array($site->idsite, $site->json), file_get_contents("templates/" . $site->template));
         });
         $app->run();
+    }
+    
+    private function getSite($name) {
+        $idsite = implode('/', $name);
+        
+        $result = \dibi::query('select idsite, template, json FROM `site` where idsite = %s', $idsite);
+
+        $sites = $result->fetchAll();
+        if (sizeof($sites) != 1) {
+            $this->app->notFound();
+        }
+            
+        return $result->fetchAll()[0];
     }
 
 }
