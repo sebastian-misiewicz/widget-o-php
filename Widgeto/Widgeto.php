@@ -2,8 +2,6 @@
 
 namespace Widgeto;
 
-use Widgeto\Service\UserService;
-
 class Widgeto {
 
     private $app;
@@ -23,7 +21,7 @@ class Widgeto {
 
         $app->put('/rest/:name+', function ($name) use ($app) {
             $idsite = implode('/', $name);
-
+            
             \dibi::query(
                     'update `site` set', array('json' => $app->request->getBody()), 'where `idsite` = %s', $idsite);
         });
