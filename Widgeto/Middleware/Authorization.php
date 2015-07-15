@@ -15,13 +15,22 @@ class Authorization extends \Slim\Middleware {
     public function call() {
         $app = $this->getApplication();
         if ($this->startsWith($app->request->getPathInfo(), "/rest/") ) {
+            if (!isset($this->headers["auth-token"])) {
+                return $this->status403();
+            }
+            
             $login = json_decode($this->headers["auth-token"], true);
             $result = UserService::check($login["username"], md5($login["password"]));
             if (!$result) {
-                $app->status(403);
+                return $this->status403();
             }
         }
         
+        $this->next->call();
+    }
+    
+    function status403() {
+        $this->getApplication()->status(403);
         $this->next->call();
     }
     
