@@ -1,4 +1,8 @@
+# Turn on the rewrite engine
 RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^[^.]+.html$ index.php [QSA,L]
+RewriteRule ^rest/(.)+$ index.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.)+.html$ index.php [L]
