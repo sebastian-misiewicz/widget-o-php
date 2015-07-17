@@ -3,6 +3,7 @@
 namespace Widgeto\Middleware;
 
 use Widgeto\Service\UserService;
+use Widgeto\Service\StringService;
 
 class Authorization extends \Slim\Middleware {    
 
@@ -14,7 +15,7 @@ class Authorization extends \Slim\Middleware {
     
     public function call() {
         $app = $this->getApplication();
-        if ($this->startsWith($app->request->getPathInfo(), "/rest/") ) {
+        if (StringService::startsWith($app->request->getPathInfo(), "/rest/") ) {
             if (!isset($this->headers["auth-token"])) {
                 return $this->status403();
             }
@@ -34,10 +35,5 @@ class Authorization extends \Slim\Middleware {
         $this->next->call();
     }
     
-    // Thanks: http://stackoverflow.com/a/10473026
-    function startsWith($haystack, $needle) {
-        return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
-    }
-
 }
 
