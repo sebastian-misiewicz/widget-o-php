@@ -2,6 +2,8 @@
 
 namespace Widgeto;
 
+use Widgeto\Service\StringService;
+
 class Widgeto {
 
     private $app;
@@ -15,8 +17,19 @@ class Widgeto {
         $databaseConfig = json_decode(file_get_contents('config/database.json'), true);
         \dibi::connect($databaseConfig);
 
-        $app->post('/rest/login.html', function () {
+        $app->post('/rest/login/', function () {
             // Do nothing here. See \Widgeto\Middleware\Authorization
+        });
+        
+        $app->get('/rest/templates/', function () {
+            $templates = array();
+            foreach (scandir("templates") as $file) {
+                if (StringService::endsWith($file, ".html")) {
+                    $templates[] = $file;
+                }
+            }
+            
+            echo json_encode($templates);
         });
 
         $app->put('/rest/:name+', function ($name) use ($app) {
