@@ -18,5 +18,17 @@ class PageService {
         return $result->fetchAll()[0];
     }
     
+    /* @var $idsite String */
+    public static function findPage($idsite) {
+        $result = \dibi::query('select idsite, template, json FROM `site` where idsite = %s', $idsite);
+
+        $sites = $result->fetchAll();
+        if (sizeof($sites) == 0) {
+            return NULL;
+        }
+            
+        return $result->fetchAll()[0];
+    }
+    
 }
 
