@@ -30,5 +30,12 @@ class PageService {
         return $result->fetchAll()[0];
     }
     
+    /* @var $idsite String */
+    public static function getAll() {
+        $result = \dibi::query('select idsite FROM `site`');
+
+        return $result->fetchAll();
+    }
+    
 }
 

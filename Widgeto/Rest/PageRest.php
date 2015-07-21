@@ -29,6 +29,11 @@ class PageRest {
             \dibi::query('insert into `site`', $page);
         });
         
+        $app->get('/rest/page/', function () use ($app) {
+            
+            echo json_encode(PageService::getAll());
+        });
+        
         $app->put('/rest/page/:name+', function ($name) use ($app) {
             $idsite = implode('/', $name);
             
