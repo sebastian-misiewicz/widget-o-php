@@ -29,7 +29,7 @@ class PageRest {
             \dibi::query('insert into `site`', $page);
         });
         
-        $app->get('/rest/page/', function () use ($app) {
+        $app->get('/rest/page/', function () {
             
             echo json_encode(PageService::getAll());
         });
