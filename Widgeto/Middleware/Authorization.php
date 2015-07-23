@@ -8,23 +8,37 @@ use Widgeto\Service\StringService;
 class Authorization extends \Slim\Middleware {    
 
     protected $headers = array();
+    protected $unprotectedUrls = array();
     
-    public function __construct($headers) {
+    /* 
+     * @var $headers array 
+     * @var $unprotectedUrls array
+     */
+    public function __construct($headers, $unprotectedUrls) {
         $this->headers = $headers;
+        $this->unprotectedUrls = $unprotectedUrls;
     }
     
     public function call() {
         $app = $this->getApplication();
-        if (StringService::startsWith($app->request->getPathInfo(), "/rest/") ) {
-            if (!isset($this->headers["auth-token"])) {
-                return $this->status403();
+        
+        foreach ($this->unprotectedUrls as $url => $method) {
+            if ($app->request->getMethod() == $method && 
+                    StringService::startsWith($app->request->getPathInfo(), $url)) {
+                
+                $this->next->call();
+                return;
             }
-            
-            $login = json_decode($this->headers["auth-token"], true);
-            $result = UserService::check($login["username"], md5($login["password"]));
-            if (!$result) {
-                return $this->status403();
-            }
+        }
+        
+        if (!isset($this->headers["auth-token"])) {
+            return $this->status403();
+        }
+
+        $login = json_decode($this->headers["auth-token"], true);
+        $result = UserService::check($login["username"], md5($login["password"]));
+        if (!$result) {
+            return $this->status403();
         }
         
         $this->next->call();

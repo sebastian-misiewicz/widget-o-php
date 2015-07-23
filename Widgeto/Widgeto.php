@@ -12,7 +12,12 @@ class Widgeto {
         $app = new \Slim\Slim();
         $this->app = $app;
         
-        $app->add(new \Widgeto\Middleware\Authorization(getallheaders()));
+        $app->add(
+                new \Widgeto\Middleware\Authorization(
+                        getallheaders(),
+                        array(
+                            '/' => 'GET', 
+                            '/rest' => 'GET')));
         
         $databaseConfig = json_decode(file_get_contents('config/database.json'), true);
         \dibi::connect($databaseConfig);
