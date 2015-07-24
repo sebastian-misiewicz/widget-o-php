@@ -37,7 +37,7 @@ class Widgeto {
             $site = PageService::getPage(array('index.html'));
 
             echo str_replace(
-                    array('{idpage}', '{page:"page"}'), array($site->idsite, $site->json), file_get_contents("templates/" . $site->template));
+                    array('{idpage}'), array($site->idsite), file_get_contents("templates/" . $site->template));
         });
         $app->run();
     }
