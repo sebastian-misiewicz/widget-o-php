@@ -25,20 +25,8 @@ class Widgeto {
         new \Widgeto\Rest\LoginRest($app);
         new \Widgeto\Rest\PageRest($app);
         new \Widgeto\Rest\TemplateRest($app);
+        new \Widgeto\Rest\HomeRest($app);
 
-        $app->get('/:name+', function ($name) {
-            $site = PageService::getPage($name);
-
-            echo str_replace(
-                    array('{idpage}', '{page:"page"}'), array($site->idsite, $site->json), file_get_contents("templates/" . $site->template));
-        });
-        
-        $app->get('/', function () {
-            $site = PageService::getPage(array('index.html'));
-
-            echo str_replace(
-                    array('{idpage}'), array($site->idsite), file_get_contents("templates/" . $site->template));
-        });
         $app->run();
     }
 
