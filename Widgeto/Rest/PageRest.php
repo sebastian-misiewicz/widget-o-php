@@ -12,7 +12,7 @@ class PageRest {
             $page = json_decode($app->request->getBody(), true);
             
             // TODO sebastian Better handle validation errors
-            if (!isset($page["idsite"]) || empty($page["idsite"])) {
+            if (!isset($page["idpage"]) || empty($page["idpage"])) {
                 $app->error();
             }
             
@@ -20,13 +20,13 @@ class PageRest {
                 $app->error();
             }
             
-            $page["idsite"] = $page["idsite"] . ".html";
-            if (PageService::findPage($page["idsite"]) != NULL) {
+            $page["idpage"] = $page["idpage"] . ".html";
+            if (PageService::findPage($page["idpage"]) != NULL) {
                 $app->error();
             }
             $page["json"] = file_get_contents("templates/" . $page["template"] . ".json");
             
-            \dibi::query('insert into `site`', $page);
+            \dibi::query('insert into `page`', $page);
         });
         
         $app->get('/rest/page/', function () {
@@ -35,10 +35,10 @@ class PageRest {
         });
         
         $app->put('/rest/page/:name+', function ($name) use ($app) {
-            $idsite = implode('/', $name);
+            $idpage = implode('/', $name);
             
             \dibi::query(
-                    'update `site` set', array('json' => $app->request->getBody()), 'where `idsite` = %s', $idsite);
+                    'update `page` set', array('json' => $app->request->getBody()), 'where `idpage` = %s', $idpage);
         });
 
         $app->get('/rest/page/:name+', function ($name) {

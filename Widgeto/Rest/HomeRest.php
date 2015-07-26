@@ -9,17 +9,17 @@ class HomeRest {
     /* @var $app \Slim\Slim */
     public function __construct($app) {
         $app->get('/:name+', function ($name) {
-            $site = PageService::getPage($name);
+            $page = PageService::getPage($name);
 
             echo str_replace(
-                    array('{idpage}', '{page:"page"}'), array($site->idsite, $site->json), file_get_contents("templates/" . $site->template));
+                    array('{idpage}', '{page:"page"}'), array($page->idpage, $page->json), file_get_contents("templates/" . $page->template));
         });
         
         $app->get('/', function () {
-            $site = PageService::getPage(array('index.html'));
+            $page = PageService::getPage(array('index.html'));
 
             echo str_replace(
-                    array('{idpage}'), array($site->idsite), file_get_contents("templates/" . $site->template));
+                    array('{idpage}'), array($page->idpage), file_get_contents("templates/" . $page->template));
         });
     }
     
