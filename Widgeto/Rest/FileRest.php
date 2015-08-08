@@ -16,6 +16,9 @@ class FileRest {
         $app->get('/rest/file', function () use ($uploadHandler) {
             $uploadHandler->get();
         });
+        $app->delete('/rest/file', function () use ($uploadHandler) {
+            $uploadHandler->delete();
+        });
         
     }
     
