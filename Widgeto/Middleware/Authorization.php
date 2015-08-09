@@ -46,7 +46,6 @@ class Authorization extends \Slim\Middleware {
     
     function status403() {
         $this->getApplication()->status(403);
-        $this->next->call();
     }
     
 }
