@@ -327,6 +327,15 @@ class UploadHandler
         }
         return null;
     }
+    
+    protected function get_image_object($file_name) {
+        $file_path = $this->get_upload_path($file_name);
+        if ($this->is_valid_file_object($file_name) 
+                && $this->is_valid_image_file($file_path)) {
+            return $this->get_file_object($file_name);
+        }
+        return null;
+    }
 
     protected function get_file_objects($iteration_method = 'get_file_object') {
         $upload_dir = $this->get_upload_path();
@@ -1289,7 +1298,7 @@ class UploadHandler
         $this->send_content_type_header();
     }
 
-    public function get($print_response = true) {
+    public function get($print_response = true, $iterationMethod = 'get_file_object') {
         if ($print_response && $this->get_query_param('download')) {
             return $this->download();
         }
@@ -1300,7 +1309,7 @@ class UploadHandler
             );
         } else {
             $response = array(
-                $this->options['param_name'] => $this->get_file_objects()
+                $this->options['param_name'] => $this->get_file_objects($iterationMethod)
             );
         }
         return $this->generate_response($response, $print_response);

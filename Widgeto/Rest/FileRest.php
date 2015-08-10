@@ -16,6 +16,15 @@ class FileRest {
         $app->get('/rest/file', function () use ($uploadHandler) {
             $uploadHandler->get();
         });
+        $app->get('/rest/file/:type', function ($type) use ($uploadHandler) {
+            $iterationMethod = null;
+            switch ($type) {
+                case 'image':
+                    $iterationMethod = 'get_image_object';
+                    break;
+            }
+            $uploadHandler->get(true, $iterationMethod);
+        });
         $app->delete('/rest/file', function () use ($uploadHandler) {
             $uploadHandler->delete();
         });
