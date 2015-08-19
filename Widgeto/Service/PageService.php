@@ -11,7 +11,7 @@ class PageService {
 
         $sites = $result->fetchAll();
         if (sizeof($sites) != 1) {
-            $this->app->notFound();
+            return NULL;
         }
             
         return $result->fetchAll()[0];
