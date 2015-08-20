@@ -28,6 +28,9 @@ class RenderRest {
                 $page["html"] = '<!DOCTYPE html><html lang="en">' . $page["html"];
             }
             
+            $page["html"] = preg_replace('/ng-[a-z]+=\"[^\"]+\"/i', "", $page["html"]);
+            $page["html"] = preg_replace('/ng-[a-z]+/i', "", $page["html"]);
+            
             file_put_contents("rendered/" . $page["idpage"], $page["html"]);
         });
         
