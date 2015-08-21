@@ -30,6 +30,8 @@ class RenderRest {
             
             $page["html"] = preg_replace('/ng-[a-z]+=\"[^\"]+\"/i', "", $page["html"]);
             $page["html"] = preg_replace('/ng-[a-z]+/i', "", $page["html"]);
+            $page["html"] = preg_replace('/<!-- widget-o:no-render[^]+/i', "", $page["html"]);
+            $page["html"] = $page["html"] + "</body></html>";
             
             file_put_contents("rendered/" . $page["idpage"], $page["html"]);
         });
