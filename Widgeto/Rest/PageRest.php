@@ -3,6 +3,7 @@
 namespace Widgeto\Rest;
 
 use Widgeto\Service\PageService;
+use Widgeto\Service\RenderService;
 
 class PageRest {    
 
@@ -36,9 +37,22 @@ class PageRest {
         
         $app->put('/rest/page/:name+', function ($name) use ($app) {
             $idpage = implode('/', $name);
+            if (!isset($idpage) || empty($idpage)) {
+                $app->error();
+            }
             
+            $page = json_decode($app->request->getBody(), true);
+            if (!isset($page["html"]) || empty($page["html"])) {
+                $app->error();
+            }
+            
+            $page["html"] = RenderService::clean($page["html"]);
+            
+            file_put_contents("rendered/" . $idpage, $page["html"]);
+            
+            $jsonString = json_encode($page["data"]);
             \dibi::query(
-                    'update `page` set', array('json' => $app->request->getBody()), 'where `idpage` = %s', $idpage);
+                    'update `page` set', array('json' => $jsonString), 'where `idpage` = %s', $idpage);
         });
 
         $app->get('/rest/page/:name+', function ($name) {

@@ -22,7 +22,6 @@ class Widgeto {
 
         new \Widgeto\Rest\LoginRest($app);
         new \Widgeto\Rest\PageRest($app);
-        new \Widgeto\Rest\RenderRest($app);
         new \Widgeto\Rest\TemplateRest($app);
         new \Widgeto\Rest\FileRest($app);
         new \Widgeto\Rest\HomeRest($app);
