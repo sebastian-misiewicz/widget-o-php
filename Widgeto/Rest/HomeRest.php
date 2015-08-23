@@ -31,9 +31,13 @@ class HomeRest {
         });
         
         
-        $app->get('/', function () {
+        $app->get('/', function () use ($app) {
             $page = PageService::getPage(array('index.html'));
 
+            if ($page == NULL) {
+                $app->notFound();
+            }
+            
             echo str_replace(
                     array('{idpage}'), array($page->idpage), file_get_contents("rendered/" . $page->template));
         });
