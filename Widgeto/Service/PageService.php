@@ -6,7 +6,12 @@ class PageService {
     
     /* @var $name array */
     public static function getPage($name) {
-        $idpage = implode('/', $name);
+        if (is_array($name)) {
+            $idpage = implode('/', $name);
+        } else {
+            $idpage = $name;
+        }
+        
         $result = \dibi::query('select idpage, template, json FROM `page` where idpage = %s', $idpage);
 
         $sites = $result->fetchAll();
