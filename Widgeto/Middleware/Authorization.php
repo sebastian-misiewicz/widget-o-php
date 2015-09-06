@@ -2,7 +2,7 @@
 
 namespace Widgeto\Middleware;
 
-use Widgeto\Service\UserService;
+use Widgeto\Service\AuthService;
 use Widgeto\Service\StringService;
 
 class Authorization extends \Slim\Middleware {    
@@ -35,9 +35,8 @@ class Authorization extends \Slim\Middleware {
             return $this->status403();
         }
 
-        $login = json_decode($this->headers["auth-token"], true);
-        $result = UserService::check($login["username"], md5($login["password"]));
-        if (!$result) {
+        $token = $this->headers["auth-token"];
+        if (!AuthService::checkToken($token)) {
             return $this->status403();
         }
         
