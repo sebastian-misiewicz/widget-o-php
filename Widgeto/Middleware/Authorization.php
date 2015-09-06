@@ -22,12 +22,14 @@ class Authorization extends \Slim\Middleware {
     public function call() {
         $app = $this->getApplication();
         
-        foreach ($this->unprotectedUrls as $url => $method) {
-            if ($app->request->getMethod() == $method && 
-                    StringService::startsWith($app->request->getPathInfo(), $url)) {
-                
-                $this->next->call();
-                return;
+        if($this->unprotectedUrls) {
+            foreach ($this->unprotectedUrls as $url => $method) {
+                if ($app->request->getMethod() == $method && 
+                        StringService::startsWith($app->request->getPathInfo(), $url)) {
+
+                    $this->next->call();
+                    return;
+                }
             }
         }
         
