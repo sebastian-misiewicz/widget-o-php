@@ -13,8 +13,9 @@ class HomeRest {
             $parent->getPage($app, $name);
         });
         
-        $app->get('/', function () use ($app, $parent) {
-            $parent->getPage($app, array('index.html'));
+        $app->get('/', function () {
+            header("Location: index.html");
+            exit;
         });
     }
     
