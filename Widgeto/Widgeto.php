@@ -21,6 +21,7 @@ class Widgeto {
         \dibi::connect($databaseConfig);
 
         new \Widgeto\Rest\LoginRest($app);
+        new \Widgeto\Rest\LogoutRest($app);
         new \Widgeto\Rest\PageRest($app);
         new \Widgeto\Rest\TemplateRest($app);
         new \Widgeto\Rest\FileRest($app);

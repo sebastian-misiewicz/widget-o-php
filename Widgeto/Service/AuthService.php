@@ -12,5 +12,11 @@ class AuthService {
         return $result->count() == 1;
     }
     
+    public static function removeToken($token) {
+        \dibi::query(
+                'delete from `oauth` where token = %s', 
+                $token);
+    }
+    
 }
 
