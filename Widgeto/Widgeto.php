@@ -14,8 +14,9 @@ class Widgeto {
                 new \Widgeto\Middleware\Authorization(
                         getallheaders(),
                         array(
-                            '/' => 'GET', 
-                            '/rest' => 'GET')));
+                            '^\/$' => 'GET', 
+                            '^\/[a-z]*.html$' => 'GET'
+                            )));
         
         $databaseConfig = json_decode(file_get_contents('config/database.json'), true);
         \dibi::connect($databaseConfig);

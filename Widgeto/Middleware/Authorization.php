@@ -25,7 +25,7 @@ class Authorization extends \Slim\Middleware {
         if($this->unprotectedUrls) {
             foreach ($this->unprotectedUrls as $url => $method) {
                 if ($app->request->getMethod() == $method && 
-                        StringService::startsWith($app->request->getPathInfo(), $url)) {
+                        preg_match("/" . $url . "/", $app->request->getPathInfo())) {
 
                     $this->next->call();
                     return;
