@@ -15,7 +15,8 @@ class Widgeto {
                         getallheaders(),
                         array(
                             '^\/$' => 'GET', 
-                            '^\/[a-z]*.html$' => 'GET'
+                            '^\/[a-z]*.html$' => 'GET',
+                            '^\/rest\/login\/$' => 'POST'
                             )));
         
         $databaseConfig = json_decode(file_get_contents('config/database.json'), true);
