@@ -27,7 +27,7 @@ class HomeRest {
         }
 
         $source = "rendered";
-        if ($app->request->get('edit') == true) {
+        if (!empty($_COOKIE["auth-token"])) {
             $source = "templates";
         }
 
