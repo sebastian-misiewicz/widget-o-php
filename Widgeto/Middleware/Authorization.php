@@ -38,10 +38,11 @@ class Authorization extends \Slim\Middleware {
         }
 
         $token = $this->headers["auth-token"];
+        
         if (!AuthService::checkToken($token)) {
             return $this->status403();
         }
-        
+
         $this->next->call();
     }
     
