@@ -54,6 +54,16 @@ class PageRest {
             \dibi::query(
                     'update `page` set', array('json' => $jsonString), 'where `idpage` = %s', $idpage);
         });
+        
+        $app->delete('/rest/page/:name+', function ($name) use ($app) {
+            $idpage = implode('/', $name);
+            if (!isset($idpage) || empty($idpage)) {
+                $app->error();
+            }
+            
+            \dibi::query(
+                    'delete from `page` where idpage = %s', $idpage);
+        });
 
         $app->get('/rest/page/:name+', function ($name) {
             $site = PageService::getPage($name);
