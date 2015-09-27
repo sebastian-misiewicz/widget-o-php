@@ -2,7 +2,7 @@
 
 namespace Widgeto\Rest;
 
-class LoginRest {    
+class LoginRest {
 
     /* @var $app \Slim\Slim */
     public function __construct($app) {
