@@ -24,3 +24,7 @@ Create a database configuration file under config/database.json
     "database": "database"
 }
 ```
+
+Run database creation script located in the sql folder.
+Default user is *admin* and password is *widgeto*.
+
