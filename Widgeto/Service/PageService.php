@@ -30,7 +30,7 @@ class PageService {
         if (sizeof($sites) == 0) {
             return NULL;
         }
-            
+        
         return $result->fetchAll()[0];
     }
     
