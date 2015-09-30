@@ -15,7 +15,7 @@ class Widgeto {
                         getallheaders(),
                         array(
                             '^\/$' => 'GET', 
-                            '^\/[a-z]*.html$' => 'GET',
+                            '^\/[^.]*.html$' => 'GET',
                             '^\/rest\/login\/$' => 'POST'
                             )));
         
