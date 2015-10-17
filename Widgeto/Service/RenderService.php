@@ -35,17 +35,13 @@ class RenderService {
         
         foreach ($matches as $match) {
             $guard = $match[0];
-            $quardedElement = $match[1];
-            $escapedGuardedElement = preg_replace("/\//", "\/", $quardedElement);
+            $guardedElement = $match[1];
+            $escapedGuardedElement = preg_replace("/\//", "\/", $guardedElement);
             
-            $guardEnd = preg_replace("/{$escapedGuardedElement};/", "{$quardedElement};end", $guard);
-            var_dump($escapedGuardedElement);
-            var_dump($guardEnd);
+            $guardEnd = preg_replace("/{$escapedGuardedElement};/", "{$guardedElement};end", $guard);
             $startIndex = strpos($html, $guard);
-            $endIndex = strpos($html, $quardedElement, $startIndex + strlen($guard));
-            var_dump($startIndex);
-            var_dump($endIndex);
-            $html = substr_replace($html, $quardedElement, $startIndex, $endIndex - $startIndex + strlen($quardedElement));
+            $endIndex = strpos($html, $guardedElement, $startIndex + strlen($guard));
+            $html = substr_replace($html, $guardedElement, $startIndex, $endIndex - $startIndex + strlen($guardedElement));
         }
         return $html;
     }
