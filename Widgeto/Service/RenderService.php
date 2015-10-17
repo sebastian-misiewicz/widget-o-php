@@ -38,16 +38,14 @@ class RenderService {
             $quardedElement = $match[1];
             $escapedGuardedElement = preg_replace("/\//", "\/", $quardedElement);
             
-            
-            
-            
             $guardEnd = preg_replace("/{$escapedGuardedElement};/", "{$quardedElement};end", $guard);
             var_dump($escapedGuardedElement);
             var_dump($guardEnd);
             $startIndex = strpos($html, $guard);
-            $endIndex = strpos($html, $guardEnd, $startIndex);
-            
-            $html = substr_replace($html, $quardedElement, $startIndex, $endIndex - $startIndex);
+            $endIndex = strpos($html, $quardedElement, $startIndex + strlen($guard));
+            var_dump($startIndex);
+            var_dump($endIndex);
+            $html = substr_replace($html, $quardedElement, $startIndex, $endIndex - $startIndex + strlen($quardedElement));
         }
         return $html;
     }
