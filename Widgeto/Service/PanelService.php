@@ -7,7 +7,7 @@ class PanelService {
     /* @var $idPanel String */
     public static function updateOrInsert($idPanel, $panelJson) {
         $panelJson = json_encode($panelJson);
-        if(self::exist($idPanel)) {
+        if(self::exists($idPanel)) {
             \dibi::query(
                     'update `panel` set', array('json' => $panelJson), 'where `idpanel` = %s', $idPanel);
         } else {
@@ -30,7 +30,7 @@ class PanelService {
         return $result->fetchAll()[0];
     }
     
-    public static function exist($idPanel) {
+    public static function exists($idPanel) {
         $result = \dibi::query('select 1 FROM `panel` where idpanel = %s', $idPanel);
 
         $panels = $result->fetchAll();

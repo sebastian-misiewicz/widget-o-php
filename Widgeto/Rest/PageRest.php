@@ -56,7 +56,8 @@ class PageRest {
                 if (isset($panelJson["isPanel"]) 
                         && $panelJson["isPanel"] == true) {
                     
-                    if (isset($panelJson["isEdit"]) && $panelJson["isEdit"] == true) {
+                    if (!PanelService::exists($idPanel) 
+                            || (isset($panelJson["isEdit"]) && $panelJson["isEdit"] == true)) {
                         $panelJson["isEdit"] = false;
                         PanelService::updateOrInsert($idPanel, $panelJson);
                     } else {
