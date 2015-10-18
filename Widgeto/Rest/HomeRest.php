@@ -26,13 +26,15 @@ class HomeRest {
             $app->notFound();
         }
 
-        $source = "rendered";
+        $sourceDirectory = "rendered";
+        $sourceFile = $page->idpage;
         if (!empty($_COOKIE["auth-token"])) {
-            $source = "templates";
+            $sourceDirectory = "templates";
+            $sourceFile = $page->template;
         }
 
         echo str_replace(
-                array('{idpage}', '{page:"page"}'), array($page->idpage, $page->json), file_get_contents($source . "/" . $page->template));
+                array('{idpage}', '{page:"page"}'), array($page->idpage, $page->json), file_get_contents($sourceDirectory . "/" . $sourceFile));
     }
     
 }
