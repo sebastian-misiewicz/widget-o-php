@@ -3,6 +3,7 @@
 namespace Widgeto\Rest;
 
 use Widgeto\Service\PageService;
+use Widgeto\Service\PanelService;
 use Widgeto\Service\RenderService;
 
 class PageRest {    
@@ -50,6 +51,24 @@ class PageRest {
             
             file_put_contents("rendered/" . $idpage, $page["html"]);
             
+            $panelJsons = [];
+            foreach ($page["data"] as $idPanel => $panelJson) {
+                if (isset($panelJson["isPanel"]) 
+                        && $panelJson["isPanel"] == true) {
+                    
+                    if (isset($panelJson["isEdit"]) && $panelJson["isEdit"] == true) {
+                        $panelJson["isEdit"] = false;
+                        PanelService::updateOrInsert($idPanel, $panelJson);
+                    } else {
+                        $panel = PanelService::find($idPanel);
+                        $panelJsons[$panel->idpanel] =  json_decode($panel->json, true);
+                    }
+                }
+            }
+            if (count($panelJsons) > 0) {
+                echo json_encode($panelJsons);
+            }
+            
             $jsonString = json_encode($page["data"]);
             \dibi::query(
                     'update `page` set', array('json' => $jsonString), 'where `idpage` = %s', $idpage);
@@ -68,7 +87,14 @@ class PageRest {
         $app->get('/rest/page/:name+', function ($name) {
             $site = PageService::getPage($name);
 
-            echo $site->json;
+            $pageJson = json_decode($site->json, true);
+            foreach ($pageJson as $idPanel => $panelJson) {
+                if (isset($panelJson["isPanel"]) && $panelJson["isPanel"] == true) {
+                    $pageJson[$idPanel] = json_decode(PanelService::find($idPanel)->json, true);
+                }
+            }
+            
+            echo json_encode($pageJson);
         });
     }
     
