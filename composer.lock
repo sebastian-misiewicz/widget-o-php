@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "95a894a2c4b005401b5423b19705cd8e",
+    "hash": "3012405caa75f4a7e38bf174b5ea4fe1",
     "packages": [
         {
             "name": "dibi/dibi",
-            "version": "v2.3.2",
+            "version": "v2.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dg/dibi.git",
-                "reference": "7762da1bbbcbffc97515cff47b118be63244834c"
+                "reference": "8f0d0fb11516f6ab1fe8616d866059550353ca00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dg/dibi/zipball/7762da1bbbcbffc97515cff47b118be63244834c",
-                "reference": "7762da1bbbcbffc97515cff47b118be63244834c",
+                "url": "https://api.github.com/repos/dg/dibi/zipball/8f0d0fb11516f6ab1fe8616d866059550353ca00",
+                "reference": "8f0d0fb11516f6ab1fe8616d866059550353ca00",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
             "authors": [
                 {
                     "name": "David Grudl",
-                    "homepage": "http://davidgrudl.com"
+                    "homepage": "https://davidgrudl.com"
                 }
             ],
             "description": "Dibi is Database Abstraction Library for PHP",
@@ -67,7 +67,7 @@
                 "postgresql",
                 "sqlite"
             ],
-            "time": "2015-04-18 14:26:53"
+            "time": "2015-10-22 00:44:33"
         },
         {
             "name": "slim/slim",
@@ -114,6 +114,49 @@
                 "router"
             ],
             "time": "2015-03-08 18:41:17"
+        },
+        {
+            "name": "sunra/php-simple-html-dom-parser",
+            "version": "v1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sunra/php-simple-html-dom-parser.git",
+                "reference": "a0b80ace086c7e09085669205e1b3c2c9c7a453c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sunra/php-simple-html-dom-parser/zipball/a0b80ace086c7e09085669205e1b3c2c9c7a453c",
+                "reference": "a0b80ace086c7e09085669205e1b3c2c9c7a453c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Sunra\\PhpSimple\\HtmlDomParser": "Src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sunra",
+                    "email": "sunra@yandex.ru",
+                    "homepage": "http://github.com/sunra"
+                }
+            ],
+            "description": "Composer adaptation of: A HTML DOM parser written in PHP5+ let you manipulate HTML in a very easy way! Require PHP 5+. Supports invalid HTML. Find tags on an HTML page with selectors just like jQuery. Extract contents from HTML in a single line.",
+            "homepage": "https://github.com/sunra/php-simple-html-dom-parser",
+            "keywords": [
+                "dom",
+                "html",
+                "parser"
+            ],
+            "time": "2013-05-04 14:32:03"
         }
     ],
     "packages-dev": [],
