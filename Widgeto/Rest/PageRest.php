@@ -5,11 +5,14 @@ namespace Widgeto\Rest;
 use Widgeto\Service\PageService;
 use Widgeto\Service\PanelService;
 use Widgeto\Service\RenderService;
+use Sunra\PhpSimple\HtmlDomParser;
 
 class PageRest {    
 
     /* @var $app \Slim\Slim */
     public function __construct($app) {
+        $parent = $this;
+        
         $app->post('/rest/page', function () use ($app) {
             $page = json_decode($app->request->getBody(), true);
             
@@ -36,7 +39,7 @@ class PageRest {
             echo json_encode(PageService::getAll());
         });
         
-        $app->put('/rest/page/:name+', function ($name) use ($app) {
+        $app->put('/rest/page/:name+', function ($name) use ($app, $parent) {
             $idpage = implode('/', $name);
             if (!isset($idpage) || empty($idpage)) {
                 $app->error();
@@ -51,21 +54,7 @@ class PageRest {
             
             file_put_contents("rendered/" . $idpage, $page["html"]);
             
-            $panelJsons = [];
-            foreach ($page["data"] as $idPanel => $panelJson) {
-                if (isset($panelJson["isPanel"]) 
-                        && $panelJson["isPanel"] == true) {
-                    
-                    if (!PanelService::exists($idPanel) 
-                            || (isset($panelJson["isEdit"]) && $panelJson["isEdit"] == true)) {
-                        $panelJson["isEdit"] = false;
-                        PanelService::updateOrInsert($idPanel, $panelJson);
-                    } else {
-                        $panel = PanelService::find($idPanel);
-                        $panelJsons[$panel->idpanel] =  json_decode($panel->json, true);
-                    }
-                }
-            }
+            $panelJsons = $parent->parsePanels($idpage, $page);
             if (count($panelJsons) > 0) {
                 echo json_encode($panelJsons);
             }
@@ -97,6 +86,49 @@ class PageRest {
             
             echo json_encode($pageJson);
         });
+    }
+    
+    function parsePanels($idPage, $page) {
+        $dom = HtmlDomParser::str_get_html($page['html']);
+        
+        $pages = [];
+        foreach (PageService::getAllOnlyIds() as $otherPage) {
+            $idOtherPage = $otherPage['idpage'];
+            if ($idOtherPage != $idPage) {
+                $pages[$idOtherPage] = HtmlDomParser::file_get_html("rendered/" . $idOtherPage);
+            }
+        }
+        
+        $panelJsons = [];
+        foreach ($page["data"] as $idPanel => $panelJson) {
+            if (isset($panelJson["isPanel"]) 
+                    && $panelJson["isPanel"] == true) {
+                
+                $panelHtmls = $dom->find('#' . $idPanel);
+                if (count($panelHtmls) > 0) {
+                    foreach ($pages as $idOtherPage => $otherPageDom) {
+                        $otherPagePanelHtmls = $otherPageDom->find('#' . $idPanel);
+                        if (count($otherPagePanelHtmls) > 0) {
+                            $otherPagePanelHtmls[0]->outertext = $panelHtmls[0]->outertext;
+                        }
+                    }
+                }
+                if (!PanelService::exists($idPanel) 
+                        || (isset($panelJson["isEdit"]) && $panelJson["isEdit"] == true)) {
+                    $panelJson["isEdit"] = false;
+                    PanelService::updateOrInsert($idPanel, $panelJson);
+                } else {
+                    $panel = PanelService::find($idPanel);
+                    $panelJsons[$panel->idpanel] =  json_decode($panel->json, true);
+                }
+            }
+        }
+        
+        foreach ($pages as $idOtherPage => $otherPageDom) {
+            file_put_contents("rendered/" . $idOtherPage, $otherPageDom);
+        }
+        
+        return $panelJsons;
     }
     
 }
