@@ -36,9 +36,7 @@ class RenderService {
         foreach ($matches as $match) {
             $guard = $match[0];
             $guardedElement = $match[1];
-            $escapedGuardedElement = preg_replace("/\//", "\/", $guardedElement);
             
-            $guardEnd = preg_replace("/{$escapedGuardedElement};/", "{$guardedElement};end", $guard);
             $startIndex = strpos($html, $guard);
             $endIndex = strpos($html, $guardedElement, $startIndex + strlen($guard));
             $html = substr_replace($html, $guardedElement, $startIndex, $endIndex - $startIndex + strlen($guardedElement));
