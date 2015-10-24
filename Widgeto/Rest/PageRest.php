@@ -104,17 +104,18 @@ class PageRest {
             if (isset($panelJson["isPanel"]) 
                     && $panelJson["isPanel"] == true) {
                 
-                $panelHtmls = $dom->find('#' . $idPanel);
-                if (count($panelHtmls) > 0) {
-                    foreach ($pages as $idOtherPage => $otherPageDom) {
-                        $otherPagePanelHtmls = $otherPageDom->find('#' . $idPanel);
-                        if (count($otherPagePanelHtmls) > 0) {
-                            $otherPagePanelHtmls[0]->outertext = $panelHtmls[0]->outertext;
-                        }
-                    }
-                }
                 if (!PanelService::exists($idPanel) 
                         || (isset($panelJson["isEdit"]) && $panelJson["isEdit"] == true)) {
+                    $panelHtmls = $dom->find('#' . $idPanel);
+                    if (count($panelHtmls) > 0) {
+                        foreach ($pages as $idOtherPage => $otherPageDom) {
+                            $otherPagePanelHtmls = $otherPageDom->find('#' . $idPanel);
+                            if (count($otherPagePanelHtmls) > 0) {
+                                $otherPagePanelHtmls[0]->outertext = $panelHtmls[0]->outertext;
+                            }
+                        }
+                    }
+                    
                     $panelJson["isEdit"] = false;
                     PanelService::updateOrInsert($idPanel, $panelJson);
                 } else {
