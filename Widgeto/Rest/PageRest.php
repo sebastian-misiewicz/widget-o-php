@@ -80,7 +80,10 @@ class PageRest {
             $pageJson = json_decode($site->json, true);
             foreach ($pageJson as $idPanel => $panelJson) {
                 if (isset($panelJson["isPanel"]) && $panelJson["isPanel"] == true) {
-                    $pageJson[$idPanel] = json_decode(PanelService::find($idPanel)->json, true);
+                    $panel = PanelService::find($idPanel);
+                    if ($panel != NULL) {
+                        $pageJson[$idPanel] = json_decode(PanelService::find($idPanel)->json, true);
+                    }
                 }
             }
             
