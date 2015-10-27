@@ -34,9 +34,14 @@ class PageService {
         return $result->fetchAll()[0];
     }
     
-    /* @var $idsite String */
     public static function getAll() {
         $result = \dibi::query('select idpage, template FROM `page`');
+
+        return $result->fetchAll();
+    }
+    
+    public static function getAllOnlyIds() {
+        $result = \dibi::query('select idpage FROM `page`');
 
         return $result->fetchAll();
     }
