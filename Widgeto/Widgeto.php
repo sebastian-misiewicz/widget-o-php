@@ -3,6 +3,7 @@
 namespace Widgeto;
 
 use Widgeto\Service\GetAllHeadersService;
+use Widgeto\Service\DatabaseConfigService;
 
 class Widgeto {
 
@@ -23,8 +24,7 @@ class Widgeto {
                             '^\/rest\/login\/$' => 'POST'
                             )));
         
-        $databaseConfig = json_decode(file_get_contents('config/database.json'), true);
-        \dibi::connect($databaseConfig);
+        \dibi::connect(DatabaseConfigService::getConfig());
 
         new \Widgeto\Rest\LoginRest($app);
         new \Widgeto\Rest\LogoutRest($app);
