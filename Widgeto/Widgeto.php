@@ -2,6 +2,8 @@
 
 namespace Widgeto;
 
+use Widgeto\Service\GetAllHeadersService;
+
 class Widgeto {
 
     private $app;
@@ -9,6 +11,8 @@ class Widgeto {
     public function run() {
         $app = new \Slim\Slim();
         $this->app = $app;
+        
+        GetAllHeadersService::fixMissingFunction();
         
         $app->add(
                 new \Widgeto\Middleware\Authorization(
