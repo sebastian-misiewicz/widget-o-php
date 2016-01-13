@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "dibi/dibi",
-            "version": "v2.3.3",
+            "version": "v2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dg/dibi.git",
-                "reference": "8f0d0fb11516f6ab1fe8616d866059550353ca00"
+                "reference": "fc6ef0b121b2138868b94eb5ea08ad0c62de05ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dg/dibi/zipball/8f0d0fb11516f6ab1fe8616d866059550353ca00",
-                "reference": "8f0d0fb11516f6ab1fe8616d866059550353ca00",
+                "url": "https://api.github.com/repos/dg/dibi/zipball/fc6ef0b121b2138868b94eb5ea08ad0c62de05ae",
+                "reference": "fc6ef0b121b2138868b94eb5ea08ad0c62de05ae",
                 "shasum": ""
             },
             "require": {
@@ -54,7 +54,7 @@
                 }
             ],
             "description": "Dibi is Database Abstraction Library for PHP",
-            "homepage": "http://dibiphp.com",
+            "homepage": "https://dibiphp.com",
             "keywords": [
                 "access",
                 "database",
@@ -67,7 +67,7 @@
                 "postgresql",
                 "sqlite"
             ],
-            "time": "2015-10-22 00:44:33"
+            "time": "2015-12-16 14:14:32"
         },
         {
             "name": "robmorgan/phinx",
