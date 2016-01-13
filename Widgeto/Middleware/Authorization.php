@@ -33,11 +33,12 @@ class Authorization extends \Slim\Middleware {
             }
         }
         
-        if (!isset($this->headers["auth-token"])) {
+        $headers = array_change_key_case($this->headers, CASE_LOWER);
+        if (!isset($headers["auth-token"])) {
             return $this->status403();
         }
 
-        $token = $this->headers["auth-token"];
+        $token = $headers["auth-token"];
         
         if (!AuthService::checkToken($token)) {
             return $this->status403();
