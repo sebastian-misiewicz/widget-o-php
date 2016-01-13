@@ -14,7 +14,7 @@ class DatabaseConfigService {
                 $matches);
             
             return array(
-                "driver" => mapDriver($matches[1]),
+                "driver" => self::mapDriver($matches[1]),
                 "host" => $matches[4],
                 "username" => $matches[2],
                 "password" => $matches[3],
