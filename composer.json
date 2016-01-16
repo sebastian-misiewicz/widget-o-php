@@ -5,7 +5,8 @@
         "slim/slim": "~2.0",
         "dibi/dibi": "^2.3",
         "sunra/php-simple-html-dom-parser": "v1.5.0",
-        "robmorgan/phinx": "^0.5.1"
+        "robmorgan/phinx": "^0.5.1",
+        "aws/aws-sdk-php": "~2.6"
     },
     "autoload": {
         "psr-0": { "Widgeto": "." }
