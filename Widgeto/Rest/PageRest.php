@@ -5,13 +5,26 @@ namespace Widgeto\Rest;
 use Widgeto\Service\PageService;
 use Widgeto\Service\PanelService;
 use Widgeto\Service\RenderService;
+use Widgeto\Service\RegularPageSourceService;
+use Widgeto\Service\AwsS3PageSourceService;
 use Sunra\PhpSimple\HtmlDomParser;
 
 class PageRest {    
 
+    private $pageSourceService;
+    
     /* @var $app \Slim\Slim */
     public function __construct($app) {
         $parent = $this;
+        
+        switch (getenv("PAGE_SOURCE_HANDLER")) {
+            case "AWS_S3":
+                $this->pageSourceService = new AwsS3PageSourceService();
+                break;
+            default:
+                $this->pageSourceService = new RegularPageSourceService();
+                break;
+        }
         
         $app->post('/rest/page', function () use ($app) {
             $page = json_decode($app->request->getBody(), true);
@@ -52,7 +65,7 @@ class PageRest {
             
             $page["html"] = RenderService::clean($page["html"]);
             
-            file_put_contents("rendered/" . $idpage, $page["html"]);
+            $parent->pageSourceService->putRendered($idpage, $page["html"]);
             
             $panelJsons = $parent->parsePanels($idpage, $page);
             if (count($panelJsons) > 0) {
@@ -130,7 +143,7 @@ class PageRest {
         }
         
         foreach ($pages as $idOtherPage => $otherPageDom) {
-            file_put_contents("rendered/" . $idOtherPage, $otherPageDom);
+            $this->pageSourceService->putRendered($idOtherPage, $otherPageDom);
         }
         
         return $panelJsons;

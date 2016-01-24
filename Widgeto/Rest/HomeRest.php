@@ -3,9 +3,13 @@
 namespace Widgeto\Rest;
 
 use Widgeto\Service\PageService;
+use Widgeto\Service\RegularPageSourceService;
+use Widgeto\Service\AwsS3PageSourceService;
 
 class HomeRest {    
 
+    private $pageSourceService;
+    
     /* @var $app \Slim\Slim */
     public function __construct($app) {
         $parent = $this;
@@ -17,6 +21,15 @@ class HomeRest {
             header("Location: index.html");
             exit;
         });
+        switch (getenv("PAGE_SOURCE_HANDLER")) {
+            case "AWS_S3":
+                $this->pageSourceService = new AwsS3PageSourceService();
+                break;
+            default:
+                $this->pageSourceService = new RegularPageSourceService();
+                break;
+        }
+        
     }
     
     function getPage($app, $name)  {
@@ -25,16 +38,16 @@ class HomeRest {
         if ($page == NULL) {
             $app->notFound();
         }
-
-        $sourceDirectory = "rendered";
-        $sourceFile = $page->idpage;
+        
+        $content = '';
         if (!empty($_COOKIE["auth-token"])) {
-            $sourceDirectory = "templates";
-            $sourceFile = $page->template;
+            $content = $this->pageSourceService->getTemplate($page->template);
+        } else {
+            $content = $this->pageSourceService->getRendered($page->idpage);
         }
 
         echo str_replace(
-                array('{idpage}', '{page:"page"}'), array($page->idpage, $page->json), file_get_contents($sourceDirectory . "/" . $sourceFile));
+                array('{idpage}', '{page:"page"}'), array($page->idpage, $page->json), $content);
     }
     
 }
