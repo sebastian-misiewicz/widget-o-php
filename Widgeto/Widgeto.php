@@ -25,6 +25,7 @@ class Widgeto {
                             )));
         
         \dibi::connect(DatabaseConfigService::getConfig());
+        \dibi::getSubstitutes()->{''} = getenv("TABLE_PREFIX");
 
         new \Widgeto\Rest\LoginRest($app);
         new \Widgeto\Rest\LogoutRest($app);

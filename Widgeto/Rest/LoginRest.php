@@ -18,7 +18,7 @@ class LoginRest {
             }
             
             $result = \dibi::query(
-                'select username FROM `user` where username = %s and password = %s', 
+                'select username FROM ::user where username = %s and password = %s', 
                 $user['username'], md5($user['password']))
                     ->fetchAll();
             
@@ -27,7 +27,7 @@ class LoginRest {
             }
             
             $oldToken = \dibi::query(
-                    'select token from `oauth` where username = %s', 
+                    'select token from ::oauth where username = %s', 
                     $user['username'])->fetch();
             
             $token = bin2hex(openssl_random_pseudo_bytes(16));
@@ -37,11 +37,11 @@ class LoginRest {
             $auth["token"] = $token;
             if ($oldToken["token"]) {
                 \dibi::query(
-                        'update `oauth` set token = %s where username = %s', 
+                        'update ::oauth set token = %s where username = %s', 
                         $token, $user['username']);
             } else {
                 \dibi::query(
-                        'insert into `oauth`', 
+                        'insert into ::oauth', 
                         $auth);
             }
             

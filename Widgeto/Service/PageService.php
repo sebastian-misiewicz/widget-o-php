@@ -12,7 +12,7 @@ class PageService {
             $idpage = $name;
         }
         
-        $result = \dibi::query('select idpage, template, json FROM `page` where idpage = %s', $idpage);
+        $result = \dibi::query('select idpage, template, json FROM ::page where idpage = %s', $idpage);
 
         $sites = $result->fetchAll();
         if (sizeof($sites) != 1) {
@@ -24,7 +24,7 @@ class PageService {
     
     /* @var $idpage String */
     public static function findPage($idpage) {
-        $result = \dibi::query('select idpage, template, json FROM `page` where idpage = %s', $idpage);
+        $result = \dibi::query('select idpage, template, json FROM ::page where idpage = %s', $idpage);
 
         $sites = $result->fetchAll();
         if (sizeof($sites) == 0) {
@@ -35,13 +35,13 @@ class PageService {
     }
     
     public static function getAll() {
-        $result = \dibi::query('select idpage, template FROM `page`');
+        $result = \dibi::query('select idpage, template FROM ::page');
 
         return $result->fetchAll();
     }
     
     public static function getAllOnlyIds() {
-        $result = \dibi::query('select idpage FROM `page`');
+        $result = \dibi::query('select idpage FROM ::page');
 
         return $result->fetchAll();
     }

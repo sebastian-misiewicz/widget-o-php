@@ -6,7 +6,7 @@ class AuthService {
     
     public static function checkToken($token) {
         $result = \dibi::query(
-                'select username FROM `oauth` where token = %s', 
+                'select username FROM ::oauth where token = %s', 
                 $token);
 
         return $result->count() == 1;
@@ -14,7 +14,7 @@ class AuthService {
     
     public static function removeToken($token) {
         \dibi::query(
-                'delete from `oauth` where token = %s', 
+                'delete from ::oauth where token = %s', 
                 $token);
     }
     

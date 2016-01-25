@@ -9,18 +9,18 @@ class PanelService {
         $panelJson = json_encode($panelJson);
         if(self::exists($idPanel)) {
             \dibi::query(
-                    'update `panel` set', array('json' => $panelJson), 'where `idpanel` = %s', $idPanel);
+                    'update ::panel set', array('json' => $panelJson), 'where `idpanel` = %s', $idPanel);
         } else {
             $panel["idpanel"] = $idPanel;
             $panel["json"] = $panelJson;
-            \dibi::query('insert into `panel`', $panel);
+            \dibi::query('insert into ::panel', $panel);
         }
         
     }
     
     /* @var $idPanel String */
     public static function find($idPanel) {
-        $result = \dibi::query('select idpanel, json FROM `panel` where idpanel = %s', $idPanel);
+        $result = \dibi::query('select idpanel, json FROM ::panel where idpanel = %s', $idPanel);
 
         $panels = $result->fetchAll();
         if (sizeof($panels) == 0) {
@@ -31,7 +31,7 @@ class PanelService {
     }
     
     public static function exists($idPanel) {
-        $result = \dibi::query('select 1 FROM `panel` where idpanel = %s', $idPanel);
+        $result = \dibi::query('select 1 FROM ::panel where idpanel = %s', $idPanel);
 
         $panels = $result->fetchAll();
         if (sizeof($panels) == 0) {

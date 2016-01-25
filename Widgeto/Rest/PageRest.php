@@ -44,7 +44,7 @@ class PageRest {
             }
             $page["json"] = file_get_contents("templates/" . $page["template"] . ".json");
             
-            \dibi::query('insert into `page`', $page);
+            \dibi::query('insert into ::page', $page);
         });
         
         $app->get('/rest/page/', function () {
@@ -74,7 +74,7 @@ class PageRest {
             
             $jsonString = json_encode($page["data"]);
             \dibi::query(
-                    'update `page` set', array('json' => $jsonString), 'where `idpage` = %s', $idpage);
+                    'update ::page set', array('json' => $jsonString), 'where `idpage` = %s', $idpage);
         });
         
         $app->delete('/rest/page/:name+', function ($name) use ($app) {
@@ -84,7 +84,7 @@ class PageRest {
             }
             
             \dibi::query(
-                    'delete from `page` where idpage = %s', $idpage);
+                    'delete from ::page where idpage = %s', $idpage);
         });
 
         $app->get('/rest/page/:name+', function ($name) {

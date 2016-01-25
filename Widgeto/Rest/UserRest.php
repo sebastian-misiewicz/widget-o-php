@@ -21,7 +21,7 @@ class UserRest {
             }
             
             $result = \dibi::query(
-                'select username FROM `user` where username = %s and password = %s', 
+                'select username FROM ::user where username = %s and password = %s', 
                 $username, md5($user['oldPassword']))
                     ->fetchAll();
             
@@ -30,7 +30,7 @@ class UserRest {
             }
             
             \dibi::query(
-                    'update `user` set password = %s where username = %s', 
+                    'update ::user set password = %s where username = %s', 
                     md5($user['newPassword']), $username);
         });
     }
