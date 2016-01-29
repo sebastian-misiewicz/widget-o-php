@@ -10,6 +10,8 @@ class AwsS3PageSourceService implements IPageSourceService {
     
     private $bucket;
     
+    private $template;
+    
     function __construct() {
         $this->s3client = S3Client::factory(array(
             'signature' => 'v4',
@@ -17,6 +19,7 @@ class AwsS3PageSourceService implements IPageSourceService {
         ));
         
         $this->bucket = getenv("AWS_BUCKET");
+        $this->template = getenv("TEMPLATE") ? getenv("TEMPLATE") . "/" : "";
     }
     
     public function putRendered($page, $content) {
@@ -35,7 +38,7 @@ class AwsS3PageSourceService implements IPageSourceService {
     }
 
     public function getTemplate($page) {
-        return file_get_contents("templates/" . $page);
+        return file_get_contents("templates/". $this->template . "" . $page);
     }
 
 }
