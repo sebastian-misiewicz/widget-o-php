@@ -8,9 +8,12 @@ class TemplateRest {
 
     /* @var $app \Slim\Slim */
     public function __construct($app) {
-        $app->get('/rest/template/', function () {
+        $parent = $this;
+        $this->template = getenv("TEMPLATE") ? "/" . getenv("TEMPLATE") : "";
+        
+        $app->get('/rest/template/', function () use ($parent) {
             $templates = array();
-            foreach (scandir("templates") as $file) {
+            foreach (scandir("templates" . $parent->template) as $file) {
                 if (StringService::endsWith($file, ".html")) {
                     $templates[] = $file;
                 }
