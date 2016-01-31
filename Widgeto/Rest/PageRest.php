@@ -13,9 +13,12 @@ class PageRest {
 
     private $pageSourceService;
     
+    private $template;
+    
     /* @var $app \Slim\Slim */
     public function __construct($app) {
         $parent = $this;
+        $this->template = getenv("TEMPLATE") ? getenv("TEMPLATE") . "/" : "";
         
         switch (getenv("PAGE_SOURCE_HANDLER")) {
             case "AWS_S3":
@@ -26,7 +29,7 @@ class PageRest {
                 break;
         }
         
-        $app->post('/rest/page', function () use ($app) {
+        $app->post('/rest/page', function () use ($app, $parent) {
             $page = json_decode($app->request->getBody(), true);
             
             // TODO sebastian Better handle validation errors
@@ -42,7 +45,7 @@ class PageRest {
             if (PageService::findPage($page["idpage"]) != NULL) {
                 $app->error();
             }
-            $page["json"] = file_get_contents("templates/" . $page["template"] . ".json");
+            $page["json"] = file_get_contents("templates/" . $parent->template . $page["template"] . ".json");
             
             \dibi::query('insert into ::page', $page);
         });

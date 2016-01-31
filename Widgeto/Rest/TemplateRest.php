@@ -6,6 +6,8 @@ use Widgeto\Service\StringService;
 
 class TemplateRest {    
 
+    private $template;
+    
     /* @var $app \Slim\Slim */
     public function __construct($app) {
         $parent = $this;
