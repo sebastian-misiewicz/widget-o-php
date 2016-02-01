@@ -36,6 +36,13 @@ class AwsS3PageSourceService implements IPageSourceService {
                 'Key' => $page
             ))['Body'];
     }
+    
+    public function doesRenderedExist($page) {
+        return $this->s3client->doesObjectExist(
+                $this->bucket,
+                $page
+            );
+    }
 
     public function getTemplate($page) {
         return file_get_contents("templates/". $this->template . "" . $page);

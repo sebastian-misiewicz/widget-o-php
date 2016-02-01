@@ -113,9 +113,10 @@ class PageRest {
         $pages = [];
         foreach (PageService::getAllOnlyIds() as $otherPage) {
             $idOtherPage = $otherPage['idpage'];
-            $otherFilePath = "rendered/" . $idOtherPage;
-            if ($idOtherPage != $idPage && file_exists($otherFilePath)) {
-                $pages[$idOtherPage] = HtmlDomParser::file_get_html($otherFilePath);
+            if ($idOtherPage != $idPage 
+                    && $this->pageSourceService->doesRenderedExist($idOtherPage)) {
+                $pages[$idOtherPage] = 
+                        HtmlDomParser::str_get_html($this->pageSourceService->getRendered($idOtherPage));
             }
         }
         

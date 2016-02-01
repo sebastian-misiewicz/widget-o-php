@@ -14,6 +14,10 @@ class RegularPageSourceService implements IPageSourceService {
         return file_get_contents("rendered/" . $page);
     }
 
+    public function doesRenderedExist($page) {
+        return file_exists("rendered/" . $page);
+    }
+    
     public function getTemplate($page) {
         return file_get_contents("templates/" . $this->template . $page);
     }

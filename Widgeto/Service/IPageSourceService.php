@@ -8,6 +8,8 @@ interface IPageSourceService {
     
     public function getRendered($page);
     
+    public function doesRenderedExist($page);
+    
     public function putRendered($page, $content);
 }
 
