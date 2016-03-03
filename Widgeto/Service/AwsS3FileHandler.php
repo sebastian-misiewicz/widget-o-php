@@ -90,16 +90,9 @@ class AwsS3FileHandler {
 
         foreach ($iterator as $object) {
             $name = $object['Key'];
-            switch ($type) {
-                case "image":
-                    if (!preg_match('/\.(gif|jpe?g|png)$/i', $name)) {
-                        continue;
-                    }
-                    break;
-                default: 
-                    continue;
+            if (!$this->isFileInType($name, $type)) {
+                continue;
             }
-            
             
             $url = $this->s3client->getObjectUrl($this->bucket, $name);
             $files["files"][] = array(
@@ -110,6 +103,20 @@ class AwsS3FileHandler {
         }
         
         return $files;
+    }
+    
+    private function isFileInType($filename, $type) {
+        switch ($type) {
+            case "image":
+                if (preg_match('/\.(gif|jpe?g|png)$/i', $filename) != 1) {
+                    return false;
+                }
+                break;
+            default: 
+                return true;
+        }
+        
+        return true;
     }
     
     public function delete() {
