@@ -14,7 +14,7 @@ class RenderService {
             }
             
             $html = self::cleanGuards($html);
-            
+            $html = self::cleanExchanges($html);
             
             $html = preg_replace('/([\" ])ng-[a-z\-]+=\"[^\"]+\"/i', "$1", $html);
             $html = preg_replace('/([\" ])ng-[a-z]+/i', "$1", $html);
@@ -40,6 +40,27 @@ class RenderService {
             $startIndex = strpos($html, $guard);
             $endIndex = strpos($html, $guardedElement, $startIndex + strlen($guard));
             $html = substr_replace($html, $guardedElement, $startIndex, $endIndex - $startIndex + strlen($guardedElement));
+        }
+        return $html;
+    }
+    
+    private static function cleanExchanges($html) {
+        $matches = array();
+        preg_match_all('/<!-- widget-o:exchange:([^;]+);([^;]+); -->/', 
+                $html, $matches, 
+                PREG_SET_ORDER);
+
+        if(sizeof($matches) == 0) {
+            return;
+        }
+        
+        foreach ($matches as $match) {
+            $pattern = "/" . $match[1] . "/";
+            $replacement = $match[2];
+            
+            $html = str_replace($match[0], "", $html);
+            $html = preg_replace($pattern, $replacement, $html);
+            
         }
         return $html;
     }
