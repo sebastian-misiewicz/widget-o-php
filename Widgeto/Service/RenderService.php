@@ -14,6 +14,7 @@ class RenderService {
             }
             
             $html = self::cleanGuards($html);
+            $html = self::cleanTails($html);
             $html = self::cleanExchanges($html);
             
             $html = preg_replace('/([\" ])ng-[a-z\-]+=\"[^\"]+\"/i', "$1", $html);
@@ -40,6 +41,27 @@ class RenderService {
             $startIndex = strpos($html, $guard);
             $endIndex = strpos($html, $guardedElement, $startIndex + strlen($guard));
             $html = substr_replace($html, $guardedElement, $startIndex, $endIndex - $startIndex + strlen($guardedElement));
+        }
+        return $html;
+    }
+    
+    private static function cleanTails($html) {
+        $matches = array();
+        preg_match_all('/<!-- widget-o:tail:([^;]+); -->/', 
+                $html, $matches, 
+                PREG_SET_ORDER);
+        
+        if(sizeof($matches) == 0) {
+            return;
+        }
+        
+        foreach ($matches as $match) {
+            $tail = $match[0];
+            $tailedElement = $match[1];
+            
+            $startIndex = strpos($html, $tailedElement);
+            $endIndex = strpos($html, $tail) + strlen($tail);
+            $html = substr_replace($html, $tailedElement, $startIndex, $endIndex);
         }
         return $html;
     }
