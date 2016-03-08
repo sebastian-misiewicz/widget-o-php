@@ -61,7 +61,8 @@ class RenderService {
             
             $startIndex = strpos($html, $tailedElement);
             $endIndex = strpos($html, $tail) + strlen($tail);
-            $html = substr_replace($html, $tailedElement, $startIndex, $endIndex);
+
+            $html = substr_replace($html, $tailedElement, $startIndex, $endIndex - $startIndex);
         }
         return $html;
     }
