@@ -31,7 +31,7 @@ class RenderService {
                 PREG_SET_ORDER);
         
         if(sizeof($matches) == 0) {
-            return;
+            return $html;
         }
         
         foreach ($matches as $match) {
@@ -52,7 +52,7 @@ class RenderService {
                 PREG_SET_ORDER);
         
         if(sizeof($matches) == 0) {
-            return;
+            return $html;
         }
         
         foreach ($matches as $match) {
@@ -74,7 +74,7 @@ class RenderService {
                 PREG_SET_ORDER);
 
         if(sizeof($matches) == 0) {
-            return;
+            return $html;
         }
         
         foreach ($matches as $match) {
