@@ -20,6 +20,7 @@ class RenderService {
             $html = preg_replace('/([\" ])ng-[a-z\-]+=\"[^\"]+\"/i', "$1", $html);
             $html = preg_replace('/([\" ])ng-[a-z]+/i', "$1", $html);
             $html = preg_replace('/[a-z]+=\"[ ]*\"/i', "", $html);
+            $html = str_replace('widget-o-toggle', '', $html);
             
             return $html;
     }
