@@ -1,0 +1,7 @@
+paths:
+    migrations: ./db/migrations
+environments:
+    default_database: testing
+    testing:
+        adapter: sqlite
+        name: ./tests/test.s3db

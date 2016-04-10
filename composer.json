@@ -3,10 +3,13 @@
     "type": "library",
     "require": {
         "slim/slim": "~2.0",
-        "dibi/dibi": "^2.3",
+        "dibi/dibi": "^3.0.4",
         "sunra/php-simple-html-dom-parser": "v1.5.0",
         "robmorgan/phinx": "^0.5.1",
         "aws/aws-sdk-php": "~2.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "5.3.*"
     },
     "autoload": {
         "psr-0": { "Widgeto": "." }

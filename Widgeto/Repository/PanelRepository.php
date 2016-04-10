@@ -27,7 +27,7 @@ class PanelRepository {
             return NULL;
         }
         
-        return $result->fetchAll()[0];
+        return $panels[0];
     }
     
     public static function exists($idPanel) {
