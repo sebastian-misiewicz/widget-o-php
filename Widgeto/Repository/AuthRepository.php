@@ -1,8 +1,8 @@
 <?php
 
-namespace Widgeto\Service;
+namespace Widgeto\Repository;
 
-class AuthService {
+class AuthRepository {
     
     public static function checkToken($token) {
         $result = \dibi::query(

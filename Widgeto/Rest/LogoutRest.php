@@ -2,7 +2,7 @@
 
 namespace Widgeto\Rest;
 
-use Widgeto\Service\AuthService;
+use Widgeto\Repository\AuthRepository;
 
 class LogoutRest {    
 
@@ -15,7 +15,7 @@ class LogoutRest {
                 $app->error();
             }
             
-            AuthService::removeToken($token);
+            AuthRepository::removeToken($token);
         });
     }
     

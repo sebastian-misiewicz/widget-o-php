@@ -1,8 +1,8 @@
 <?php
 
-namespace Widgeto\Service;
+namespace Widgeto\Repository;
 
-class PageService {
+class PageRepository {
     
     /* @var $name array */
     public static function getPage($name) {

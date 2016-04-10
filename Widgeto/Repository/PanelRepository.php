@@ -1,8 +1,8 @@
 <?php
 
-namespace Widgeto\Service;
+namespace Widgeto\Repository;
 
-class PanelService {
+class PanelRepository {
     
     /* @var $idPanel String */
     public static function updateOrInsert($idPanel, $panelJson) {

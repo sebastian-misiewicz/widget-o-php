@@ -2,8 +2,7 @@
 
 namespace Widgeto\Middleware;
 
-use Widgeto\Service\AuthService;
-use Widgeto\Service\StringService;
+use Widgeto\Repository\AuthRepository;
 
 class Authorization extends \Slim\Middleware {    
 
@@ -40,7 +39,7 @@ class Authorization extends \Slim\Middleware {
 
         $token = $headers["auth-token"];
         
-        if (!AuthService::checkToken($token)) {
+        if (!AuthRepository::checkToken($token)) {
             return $this->status403();
         }
 

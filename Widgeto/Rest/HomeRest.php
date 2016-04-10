@@ -2,7 +2,7 @@
 
 namespace Widgeto\Rest;
 
-use Widgeto\Service\PageService;
+use Widgeto\Repository\PageRepository;
 use Widgeto\Service\RegularPageSourceService;
 use Widgeto\Service\AwsS3PageSourceService;
 
@@ -33,7 +33,7 @@ class HomeRest {
     }
     
     function getPage($app, $name)  {
-        $page = PageService::getPage($name);
+        $page = PageRepository::getPage($name);
             
         if ($page == NULL) {
             $app->notFound();
