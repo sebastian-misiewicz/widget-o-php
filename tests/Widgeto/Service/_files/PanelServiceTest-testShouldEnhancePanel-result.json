@@ -1,0 +1,7 @@
+{
+    "testPanel": {
+        "text": "message",
+        "isPanel": true,
+        "isEdit": false
+    }
+}

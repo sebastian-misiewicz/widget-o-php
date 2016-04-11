@@ -4,14 +4,17 @@ namespace Widgeto\Rest;
 
 use Widgeto\Repository\PageRepository;
 use Widgeto\Repository\PanelRepository;
+use Widgeto\Service\PanelService;
 use Widgeto\Service\RenderService;
 use Widgeto\Service\RegularPageSourceService;
 use Widgeto\Service\AwsS3PageSourceService;
-use Sunra\PhpSimple\HtmlDomParser;
+
 
 class PageRest {    
 
     private $pageSourceService;
+    
+    private $panelService;
     
     private $template;
     
@@ -19,6 +22,7 @@ class PageRest {
     public function __construct($app) {
         $parent = $this;
         $this->template = getenv("TEMPLATE") ? getenv("TEMPLATE") . "/" : "";
+        $this->panelService = new PanelService();
         
         switch (getenv("PAGE_SOURCE_HANDLER")) {
             case "AWS_S3":
@@ -45,7 +49,11 @@ class PageRest {
             if (PageRepository::findPage($page["idpage"]) != NULL) {
                 $app->error();
             }
-            $page["json"] = file_get_contents("templates/" . $parent->template . $page["template"] . ".json");
+            $json = file_get_contents("templates/" . $parent->template . $page["template"] . ".json");
+            
+            $page["json"] = json_encode(
+                                $parent->panelService->enhancePanels(
+                                    json_decode($json, true)));
             
             \dibi::query('insert into ::page', $page);
         });
@@ -70,7 +78,7 @@ class PageRest {
             
             $parent->pageSourceService->putRendered($idpage, $page["html"]);
             
-            $panelJsons = $parent->parsePanels($idpage, $page);
+            $panelJsons = $parent->panelService->parsePanels($idpage, $page);
             if (count($panelJsons) > 0) {
                 echo json_encode($panelJsons);
             }
@@ -107,50 +115,6 @@ class PageRest {
         });
     }
     
-    function parsePanels($idPage, $page) {
-        $dom = HtmlDomParser::str_get_html($page['html']);
-        
-        $pages = [];
-        foreach (PageRepository::getAllOnlyIds() as $otherPage) {
-            $idOtherPage = $otherPage['idpage'];
-            if ($idOtherPage != $idPage 
-                    && $this->pageSourceService->doesRenderedExist($idOtherPage)) {
-                $pages[$idOtherPage] = 
-                        HtmlDomParser::str_get_html($this->pageSourceService->getRendered($idOtherPage));
-            }
-        }
-        
-        $panelJsons = [];
-        foreach ($page["data"] as $idPanel => $panelJson) {
-            if (isset($panelJson["isPanel"]) 
-                    && $panelJson["isPanel"] == true) {
-                
-                if (!PanelRepository::exists($idPanel) 
-                        || (isset($panelJson["isEdit"]) && $panelJson["isEdit"] == true)) {
-                    $panelHtmls = $dom->find('#' . $idPanel);
-                    if (count($panelHtmls) > 0) {
-                        foreach ($pages as $idOtherPage => $otherPageDom) {
-                            $otherPagePanelHtmls = $otherPageDom->find('#' . $idPanel);
-                            if (count($otherPagePanelHtmls) > 0) {
-                                $otherPagePanelHtmls[0]->outertext = $panelHtmls[0]->outertext;
-                            }
-                        }
-                    }
-                    
-                    $panelJson["isEdit"] = false;
-                    PanelRepository::updateOrInsert($idPanel, $panelJson);
-                } else {
-                    $panel = PanelRepository::find($idPanel);
-                    $panelJsons[$panel->idpanel] =  json_decode($panel->json, true);
-                }
-            }
-        }
-        
-        foreach ($pages as $idOtherPage => $otherPageDom) {
-            $this->pageSourceService->putRendered($idOtherPage, $otherPageDom);
-        }
-        
-        return $panelJsons;
-    }
+    
     
 }
