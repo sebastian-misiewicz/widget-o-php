@@ -2,6 +2,7 @@
 
 namespace Widgeto\Service;
 
+use Widgeto\Repository\PageRepository;
 use Widgeto\Repository\PanelRepository;
 use Sunra\PhpSimple\HtmlDomParser;
 

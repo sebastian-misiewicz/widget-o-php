@@ -106,7 +106,7 @@ class PageRest {
                 if (isset($panelJson["isPanel"]) && $panelJson["isPanel"] == true) {
                     $panel = PanelRepository::find($idPanel);
                     if ($panel != NULL) {
-                        $pageJson[$idPanel] = json_decode(PanelService::find($idPanel)->json, true);
+                        $pageJson[$idPanel] = json_decode(PanelRepository::find($idPanel)->json, true);
                     }
                 }
             }
