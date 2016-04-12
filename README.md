@@ -1,6 +1,6 @@
 # PHP Server for widget-o
 
-## 1. Installation
+## Installation
 Add dependency to composer.json:
 ```json
 "widget-o/widget-o-php": "dev-master"
@@ -28,3 +28,9 @@ Create a database configuration file under config/database.json
 Run database creation script located in the sql folder.
 Default user is *admin* and password is *widgeto*.
 
+## Testing
+
+Run phpunit:
+```
+phpunit
+```
